@@ -1,5 +1,7 @@
 # Silicoid Core — PotAGI backend · 0x4D
 
+[![License: BSL 1.1](https://img.shields.io/badge/License-BSL%201.1-blue.svg)](https://github.com/0x4D0x00/digitalsingularity/blob/main/LICENSE)
+
 Silicoid Core is the PotAGI backend — the brain module for the Silicoid AI, designed and maintained by 0x4D.
 
 Contact: moycox@Outlook.com · +86 18667048877 · Hangzhou, China
@@ -64,6 +66,35 @@ This repository uses a permanent Business Source License (BSL).
 - **Commercial/Production Use**: Requires explicit written authorization and commercial license agreement from the author
 - **Non-Commercial/Academic/Evaluation Use**: Permitted but requires email notification to the author for record-keeping (send to `moycox@Outlook.com` with subject "Silicoid Core non-commercial use notification" and brief description of intended use)
 - **Commercial Licensing Process**: Contact via email at `moycox@Outlook.com` for pricing and contract details
+
+### Commercial Licensing
+
+For organizations interested in commercial licensing of Silicoid Core:
+
+1. **Contact**: moycox@Outlook.com
+2. **Subject**: "Silicoid Core Commercial License Inquiry"
+3. **Provide**: Your organization details, intended use case, and expected usage scale
+4. **Response**: You'll receive licensing terms, pricing, and contract details
+
+Commercial licenses are available for production deployment, redistribution, and commercial AI service development.
+
+## Support & Sponsorship
+
+### Commercial Licensing
+For commercial use of Silicoid Core, please contact:
+- **Email**: moycox@Outlook.com
+- **Subject**: "Silicoid Core Commercial License Inquiry"
+- **Phone**: +86 18667048877
+
+### Community Support
+- **GitHub Issues**: Report bugs and suggestions
+- **Pull Requests**: Contribute code improvements
+- **Discussions**: Technical exchanges and sharing
+
+### Sponsorship (Optional)
+If you'd like to support project development, consider:
+- 💰 **Afdian**: [https://ifdian.net/a/0x4D0x00](https://ifdian.net/a/0x4D0x00) - WeChat/Alipay support
+- 📧 **Business Partnerships**: Contact for collaboration opportunities
 
 The repository includes `LICENSE` (BSL summary + full text), `CONTRIBUTING.md`, and `CLA.md` to clarify contribution and commercial rights.
 

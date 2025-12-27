@@ -4,7 +4,7 @@ Thank you for your interest in contributing to Silicoid Core — the PotAGI back
 
 ## Code of Conduct
 
-This project follows a code of conduct to ensure a welcoming environment for all contributors. By participating, you agree to:
+This project follows a code of conduct to ensure a welcoming environment for all contributors. Please read the full [Code of Conduct](CODE_OF_CONDUCT.md) before contributing. By participating, you agree to:
 
 - Be respectful and inclusive
 - Focus on constructive feedback

@@ -1,5 +1,7 @@
 # Silicoid Core — PotAGI 后端 · 0x4D
 
+[![License: BSL 1.1](https://img.shields.io/badge/License-BSL%201.1-blue.svg)](https://github.com/0x4D0x00/digitalsingularity/blob/main/LICENSE)
+
 Silicoid Core 是 PotAGI 后端 — Silicoid AI 的大脑模块，由 0x4D 设计和维护。
 
 联系方式：moycox@Outlook.com · +86 18667048877 · 中国杭州
@@ -64,6 +66,35 @@ Silicoid Core 是一个面向"模型集成与能力编排"的后端平台。设�
 - **商业/生产用途**：须事先获得作者（0x4D）的书面授权并签订商业许可协议
 - **非商业/学术/评估用途**：允许使用，但须通过邮件通知作者以便备案（发送至 `moycox@Outlook.com`，主题请写明"Silicoid Core 非商业使用通知"并简要说明用途）
 - **商业授权流程**：请通过 email `moycox@Outlook.com` 联系，后续以邮件沟通报价与合同细节
+
+### 商业许可
+
+对于对 Silicoid Core 商业许可感兴趣的组织：
+
+1. **联系方式**：moycox@Outlook.com
+2. **邮件主题**："Silicoid Core 商业许可咨询"
+3. **提供信息**：您的组织详情、预期用途和预期使用规模
+4. **回复内容**：您将收到许可条款、定价和合同详情
+
+商业许可可用于生产部署、再分发和商业 AI 服务开发。
+
+## 支持与赞助
+
+### 商业许可
+如果您需要商业使用 Silicoid Core，请通过以下方式联系：
+- **邮箱**: moycox@Outlook.com
+- **主题**: "Silicoid Core 商业许可咨询"
+- **电话**: +86 18667048877
+
+### 社区支持
+- **GitHub Issues**: 报告问题和建议
+- **Pull Requests**: 贡献代码改进
+- **讨论**: 技术交流和使用经验分享
+
+### 赞助（可选）
+如果您希望支持项目发展，可以考虑：
+- 💰 **爱发电**: [https://ifdian.net/a/0x4D0x00](https://ifdian.net/a/0x4D0x00) - 支持微信/支付宝
+- 📧 **商业合作**: 联系邮箱讨论合作机会
 
 仓库包含 `LICENSE`（BSL 简明摘要 + 完整文本）、`CONTRIBUTING.md` 与 `CLA.md` 以明确贡献与商业权利归属。
 
