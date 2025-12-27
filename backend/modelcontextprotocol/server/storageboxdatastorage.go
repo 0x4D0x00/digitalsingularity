@@ -26,10 +26,10 @@ type DatabaseConfig struct {
 
 // StorageboxDBConfig Storagebox数据库配置
 var StorageboxDBConfig = DatabaseConfig{
-	Host:     "115.190.234.43",
+	Host:     "127.0.0.1",
 	Port:     "3306",
 	User:     "root",
-	Password: "E^eff8b4",
+	Password: "XXXXXXXXXXXXXXXXXXXXXXXXXX",
 	Name:     "storagebox",
 }
 
@@ -696,4 +696,5 @@ func isValidIP(ip string) bool {
 
 	return true
 }
+
 
