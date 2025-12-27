@@ -80,13 +80,13 @@ sudo apt-get install -y mysql-server
 
 请根据实际情况选择：
 
-1）**方案 A：让 MySQL root 使用密码 `E^eff8b4`（与示例一致）**
+1）**方案 A：让 MySQL root 使用密码 `XXXXXXXXXXXXXXXXXXXXXXXXXXX`（与示例一致）**
 
 ```bash
 sudo mysql
 
 -- 设置 root 账号密码（仅示例，按需调整）
-ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'E^eff8b4';
+ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'XXXXXXXXXXXXXXXXXXXXXXXXXXX';
 FLUSH PRIVILEGES;
 EXIT;
 ```
@@ -141,11 +141,11 @@ sudo systemctl status mysql
 sudo mysql
 ```
 
-2）为 `root@'%'` 设置密码和权限（示例密码仍为 `E^eff8b4`，按需修改）：
+2）为 `root@'%'` 设置密码和权限（示例密码仍为 `XXXXXXXXXXXXXXXXXXXXXXXXXXX`，按需修改）：
 
 ```sql
-CREATE USER IF NOT EXISTS 'root'@'%' IDENTIFIED WITH mysql_native_password BY 'E^eff8b4';
-ALTER USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY 'E^eff8b4';
+CREATE USER IF NOT EXISTS 'root'@'%' IDENTIFIED WITH mysql_native_password BY 'XXXXXXXXXXXXXXXXXXXXXXXXXXX';
+ALTER USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY 'XXXXXXXXXXXXXXXXXXXXXXXXXXX';
 GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION;
 FLUSH PRIVILEGES;
 ```
@@ -163,12 +163,12 @@ sudo ufw allow 3306/tcp
 sudo ufw reload
 ```
 
-> 在 Navicat 中连接时，主机填服务器公网 IP（或内网 IP），端口 3306，用户名 `root`，密码 `E^eff8b4`。
+> 在 Navicat 中连接时，主机填服务器公网 IP（或内网 IP），端口 3306，用户名 `root`，密码 `XXXXXXXXXXXXXXXXXXXXXXXXXXX`。
 
 #### 2.4 创建数据库并导入 SQL
 
 ```bash
-mysql -uroot -p'E^eff8b4' -e "CREATE DATABASE IF NOT EXISTS security_check DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+mysql -uroot -p'XXXXXXXXXXXXXXXXXXXXXXXXXXX' -e "CREATE DATABASE IF NOT EXISTS security_check DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
 ```
 
 项目中与数据库结构相关的 SQL 文件在：
@@ -182,8 +182,8 @@ mysql -uroot -p'E^eff8b4' -e "CREATE DATABASE IF NOT EXISTS security_check DEFAU
 cd /program/digitalsingularity/backend/data_structure
 
 # 下面仅举例，请按实际需要选择要导入的 SQL 文件
-mysql -uroot -p'E^eff8b4' security_check < security_check/001_init_tables.sql
-mysql -uroot -p'E^eff8b4' security_check < security_check/002_xxx.sql
+mysql -uroot -p'XXXXXXXXXXXXXXXXXXXXXXXXXXX' security_check < security_check/001_init_tables.sql
+mysql -uroot -p'XXXXXXXXXXXXXXXXXXXXXXXXXXX' security_check < security_check/002_xxx.sql
 # ...
 ```
 
@@ -195,7 +195,7 @@ mysql -uroot -p'E^eff8b4' security_check < security_check/002_xxx.sql
 sudo apt-get install -y redis-server
 ```
 
-#### 3.1 配置 Redis 监听地址和密码（示例：`0.0.0.0` + `E^eff8b4`）
+#### 3.1 配置 Redis 监听地址和密码（示例：`0.0.0.0` + `XXXXXXXXXXXXXXXXXXXXXXXXXXX`）
 
 先改好配置，再启动服务。
 
@@ -209,7 +209,7 @@ Ctrl+w 搜索并修改 `bind` 和 `requirepass`（注意密码里的 `^` 不需�
 
 ```text
 bind 0.0.0.0
-requirepass E^eff8b4
+requirepass XXXXXXXXXXXXXXXXXXXXXXXXXXX
 ```
 
 保存退出。
@@ -228,11 +228,11 @@ sudo systemctl status redis-server
 
 ```bash
 redis-cli
-127.0.0.1:6379> AUTH "E^eff8b4"
+127.0.0.1:6379> AUTH "XXXXXXXXXXXXXXXXXXXXXXXXXXX"
 OK
 ```
 
-> 如果应用需要连接有密码的 Redis，请在应用配置中使用相同的密码（例如 `redis://:E^eff8b4@127.0.0.1:6379/0`）。
+> 如果应用需要连接有密码的 Redis，请在应用配置中使用相同的密码（例如 `redis://:XXXXXXXXXXXXXXXXXXXXXXXXXXX@127.0.0.1:6379/0`）。
 
 ---
 
@@ -364,7 +364,7 @@ Environment="GIN_MODE=release"
 Environment="DB_HOST=localhost"
 Environment="DB_PORT=3306"
 Environment="DB_USER=root"
-Environment="DB_PASSWORD=E^eff8b4"
+Environment="DB_PASSWORD=XXXXXXXXXXXXXXXXXXXXXXXXXXX"
 Environment="DB_NAME=security_check"
 ```
 
@@ -476,6 +476,7 @@ curl http://127.0.0.1:<你的服务端口>/health
 ```
 
 若能正常返回 JSON 或预期内容，则说明 Digital Singularity 后端服务已成功部署并运行。
+
 
 
 
