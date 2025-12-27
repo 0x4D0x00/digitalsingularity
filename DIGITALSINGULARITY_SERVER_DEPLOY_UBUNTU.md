@@ -75,8 +75,8 @@ sudo apt-get install -y mysql-server
 - **数据库主机**：`localhost`
 - **端口**：`3306`
 - **用户**：`root`
-- **密码**：`E^eff8b4`
-- **数据库名**：`security_check`
+- **密码**：`XXXXXXXXXXXXXXXXXXXXXXXXXXX`
+- **数据库名**：`XXXXXXXXXXXXXXXXXXXXXXXXXXX`
 
 请根据实际情况选择：
 
@@ -476,5 +476,6 @@ curl http://127.0.0.1:<你的服务端口>/health
 ```
 
 若能正常返回 JSON 或预期内容，则说明 Digital Singularity 后端服务已成功部署并运行。
+
 
 
