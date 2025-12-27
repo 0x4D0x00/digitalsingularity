@@ -1,0 +1,25 @@
+{
+  "mcpServers": [
+    {
+      "type": "url",
+      "url": "http://115.190.234.43:40717/mcp/current-time",
+      "name": "current-time",
+      "description": "获取当前时间",
+      "authorization_token": "${MCP_CURRENT_TIME_TOKEN}"
+    },
+    {
+      "type": "url",
+      "url": "http://115.190.234.43:40717/mcp/current-weather",
+      "name": "current-weather",
+      "description": "获取当前天气信息",
+      "authorization_token": "${MCP_CURRENT_WEATHER_TOKEN}"
+    },
+    {
+      "type": "url",
+      "url": "http://115.190.234.43:40717/mcp/storagebox-ip-storage",
+      "name": "storagebox",
+      "description": "Storagebox数据库操作服务器 - 支持IP存储、端口存储和数据查询",
+      "authorization_token": "${MCP_STORAGEBOX_TOKEN}"
+    }
+  ]
+}
