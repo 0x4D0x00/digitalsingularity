@@ -3,12 +3,18 @@ package database
 import (
 	"fmt"
 	"strings"
+	"sync"
 	"time"
 	"unicode"
 
 
 	"digitalsingularity/backend/common/security/symmetricencryption/encrypt"
 	"digitalsingularity/backend/common/utils/datahandle"
+)
+
+var (
+	communicationService *datahandle.CommonReadWriteService
+	serviceOnce         sync.Once
 )
 
 // Friend 好友关系结构
@@ -69,14 +75,26 @@ type FriendWithUserInfo struct {
 	PersonalAssistantEnabled int        `json:"personal_assistant_enabled"`
 }
 
-// getService 获取数据库服务实例
+// getService 获取数据库服务实例（使用单例模式）
 func getService() (*datahandle.CommonReadWriteService, error) {
-	return datahandle.NewCommonReadWriteService("communication_system")
+	var err error
+	serviceOnce.Do(func() {
+		communicationService, err = datahandle.NewCommonReadWriteService("communication_system")
+	})
+	return communicationService, err
 }
 
 // GetServiceForRelationship 暴露给上层的服务获取方法
 func GetServiceForRelationship() (*datahandle.CommonReadWriteService, error) {
 	return getService()
+}
+
+// CloseCommunicationService 关闭通信系统数据库连接
+func CloseCommunicationService() {
+	if communicationService != nil {
+		communicationService.Close()
+		communicationService = nil
+	}
 }
 
 // GetUserIDByCommunicationID 根据通信ID查询内部 user_id
