@@ -10,11 +10,10 @@ import (
 	"sync"
 	"time"
 
-	pathconfig "digitalsingularity/backend/common/configs"
+	"digitalsingularity/backend/common/configs/settings"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/go-redis/redis/v8"
-	"github.com/spf13/viper"
 	"golang.org/x/net/context"
 )
 
@@ -65,79 +64,56 @@ func NewCommonReadWriteService(databaseSection string) (*CommonReadWriteService,
 	return service, nil
 }
 
+// getCommonSettings 获取应用配置实例
+func (s *CommonReadWriteService) getCommonSettings() *settings.CommonSettings {
+	return settings.NewCommonSettings()
+}
+
+// GetDbConfig 获取数据库配置（公开方法）
+func (s *CommonReadWriteService) GetDbConfig() map[string]interface{} {
+	return s.dbConfig
+}
+
 // 加载配置文件
 func (s *CommonReadWriteService) loadConfig(databaseSection string) error {
-	// 使用统一的路径配置
-	pathCfg := pathconfig.GetInstance()
-	
-	// 配置Viper读取配置文件
-	viper.SetConfigName("backendserviceconfig")
-	viper.SetConfigType("ini")
+	// 使用应用配置系统
+	commonSettings := settings.NewCommonSettings()
 
-	// 添加配置路径
-	viper.AddConfigPath(pathCfg.ConfigPath)
-	viper.AddConfigPath(pathCfg.ConfigPathLegacy)
-	viper.AddConfigPath("backend/common/config")
-	viper.AddConfigPath("config")
-
-	// 读取配置文件
-	if err := viper.ReadInConfig(); err != nil {
-		return fmt.Errorf("读取配置文件失败: %v", err)
-	}
-
-	// 保存原始数据库节名称，用于确定数据库名
-	originalDatabaseSection := databaseSection
-
-	// 如果指定的数据库部分不存在，使用默认的"database"作为连接配置节
-	// 但保留原始名称用于确定数据库名
-	connectionSection := databaseSection
-	if !viper.IsSet(databaseSection) {
-		connectionSection = "database"
-	}
-
-	// 设置数据库配置（使用连接配置节）
+	// 设置数据库配置（使用应用配置）
 	s.dbConfig = map[string]interface{}{
-		"host":     viper.GetString(fmt.Sprintf("%s.host", connectionSection)),
-		"port":     viper.GetInt(fmt.Sprintf("%s.port", connectionSection)),
-		"user":     viper.GetString(fmt.Sprintf("%s.user", connectionSection)),
-		"password": viper.GetString(fmt.Sprintf("%s.password", connectionSection)),
+		"host":     commonSettings.DbHost,
+		"port":     commonSettings.DbPort,
+		"user":     commonSettings.DbUser,
+		"password": commonSettings.DbPassword,
 	}
-	
+
 	// 根据原始数据库部分名称确定具体的数据库名
 	var databaseName string
-	switch originalDatabaseSection {
-	case "database":
+	switch databaseSection {
+	case "database", "silicoid":
 		// 默认使用silicoid数据库
-		databaseName = viper.GetString("database.app_silicoid_database")
-	case "mcp_web_data_collection":
-		databaseName = viper.GetString("database.mcp_web_data_collection_database")
+		databaseName = commonSettings.DbNameSilicoid
 	case "common":
-		databaseName = viper.GetString("database.data_common_database")
-	case "security_check":
-		databaseName = viper.GetString("database.app_security_check_database")
-	case "speech_system":
-		databaseName = viper.GetString("database.speech_system_database")
-	case "comprehensive_strike":
-		databaseName = viper.GetString("database.comprehensive_strike_database")
+		databaseName = commonSettings.DbName
 	case "communication_system":
-		databaseName = viper.GetString("database.communication_system_database")
+		// 通信系统数据库
+		databaseName = commonSettings.DbNameCommunication
+	case "storagebox":
+		databaseName = "storagebox" // Storagebox数据库固定名称
 	default:
 		// 如果指定的数据库部分不存在，尝试直接读取
-		databaseName = viper.GetString(fmt.Sprintf("%s.database", originalDatabaseSection))
-		if databaseName == "" {
-			// 最后降级到silicoid数据库
-			databaseName = viper.GetString("database.app_silicoid_database")
-		}
+		// 最后降级到silicoid数据库
+		databaseName = commonSettings.DbNameSilicoid
 	}
-	
+
 	s.dbConfig["database"] = databaseName
 
 	// 设置Redis配置
 	s.redisConfig = map[string]interface{}{
-		"host":     viper.GetString("Redis.host"),
-		"port":     viper.GetInt("Redis.port"),
-		"password": viper.GetString("Redis.pwd"),
-		"db":       0,
+		"host":     commonSettings.RedisHost,
+		"port":     commonSettings.RedisPort,
+		"password": commonSettings.RedisPassword,
+		"db":       commonSettings.RedisDb,
 	}
 
 	return nil
@@ -551,9 +527,9 @@ func (s *CommonReadWriteService) Close() {
 func (s *CommonReadWriteService) GetServerPublicKey() *OperationResult {
 	log.Println("开始获取服务器公钥")
 
-	// 使用统一的路径配置
-	pathCfg := pathconfig.GetInstance()
-	publicKeyPath := pathCfg.GetConfigPath("server_public_key.pem")
+	// 使用应用配置服务获取公钥文件路径
+	commonSettings := s.getCommonSettings()
+	publicKeyPath := commonSettings.GetConfigPath("server_public_key.pem")
 	
 	log.Printf("尝试从路径读取公钥: %s", publicKeyPath)
 
