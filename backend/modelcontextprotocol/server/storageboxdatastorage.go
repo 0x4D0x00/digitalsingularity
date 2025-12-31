@@ -10,9 +10,43 @@ import (
 	"strconv"
 	"strings"
 
-	"digitalsingularity/backend/modelcontextprotocol/server/cybersecurity/networkscan"
+	"digitalsingularity/backend/common/utils/datahandle"
+	"digitalsingularity/backend/modelcontextprotocol/server/cybersecurity/network"
 	_ "github.com/go-sql-driver/mysql"
 )
+
+// StorageboxDataService 处理Storagebox相关的数据服务
+// 参考 backend/silicoid/database/service.go 的设计模式
+type StorageboxDataService struct {
+	dataService *datahandle.CommonReadWriteService
+	dbName      string
+}
+
+// NewStorageboxDataService 创建Storagebox数据服务实例
+func NewStorageboxDataService(dataService *datahandle.CommonReadWriteService) *StorageboxDataService {
+	return &StorageboxDataService{
+		dataService: dataService,
+		dbName:      "storagebox",
+	}
+}
+
+// GetDatabaseName 返回数据库名
+func (s *StorageboxDataService) GetDatabaseName() string {
+	return s.dbName
+}
+
+// 包级别的默认服务实例
+var defaultStorageboxService *StorageboxDataService
+
+// init 初始化默认的服务实例
+func init() {
+	dataService, err := datahandle.NewCommonReadWriteService("storagebox")
+	if err != nil {
+		log.Printf("Failed to create default storagebox data service: %v", err)
+		return
+	}
+	defaultStorageboxService = NewStorageboxDataService(dataService)
+}
 
 
 // DatabaseConfig 数据库配置结构体
@@ -24,13 +58,29 @@ type DatabaseConfig struct {
 	Name     string
 }
 
-// StorageboxDBConfig Storagebox数据库配置
-var StorageboxDBConfig = DatabaseConfig{
-	Host:     "127.0.0.1",
-	Port:     "3306",
-	User:     "root",
-	Password: "XXXXXXXXXXXXXXXXXXXXXXXXXX",
-	Name:     "storagebox",
+// getStorageboxDBConfig 获取Storagebox数据库配置
+func getStorageboxDBConfig() DatabaseConfig {
+	// 使用默认的服务实例，参考silicoid/database/service.go的简洁模式
+	if defaultStorageboxService == nil || defaultStorageboxService.dataService == nil {
+		log.Printf("Storagebox data service not available")
+		return DatabaseConfig{
+			Host:     "localhost",
+			Port:     "3306",
+			User:     "root",
+			Password: "",
+			Name:     "storagebox",
+		}
+	}
+
+	// 通过服务实例获取配置，简洁明了
+	config := defaultStorageboxService.dataService.GetDbConfig()
+	return DatabaseConfig{
+		Host:     config["host"].(string),
+		Port:     fmt.Sprintf("%v", config["port"]),
+		User:     config["user"].(string),
+		Password: config["password"].(string),
+		Name:     "storagebox",
+	}
 }
 
 // getDatabaseConnection 通用数据库连接函数
@@ -56,7 +106,8 @@ func getDatabaseConnection(config DatabaseConfig) (*sql.DB, error) {
 
 // getStorageboxDB 获取Storagebox数据库连接
 func getStorageboxDB() (*sql.DB, error) {
-	return getDatabaseConnection(StorageboxDBConfig)
+	config := getStorageboxDBConfig()
+	return getDatabaseConnection(config)
 }
 
 // StorageboxIPStorageRequest IP存储请求结构
@@ -244,13 +295,13 @@ func handleIPAddressStorage(w http.ResponseWriter, args map[string]interface{}, 
 	defer db.Close()
 
 	// 先进行Nmap扫描
-	var scanResults []*networkscan.ScanResult
+	var scanResults []*network.ScanResult
 	if len(req.IP) == 1 {
 		// 单个IP使用同步扫描
-		scanResults = []*networkscan.ScanResult{networkscan.ScanSingleIP(req.IP[0])}
+		scanResults = []*network.ScanResult{network.ScanSingleIP(req.IP[0])}
 	} else {
 		// 多个IP使用并发扫描
-		scanResults = networkscan.ScanIPList(req.IP)
+		scanResults = network.ScanIPList(req.IP)
 	}
 
 	// 存储IP地址和发现的端口信息
@@ -401,13 +452,13 @@ func handleIPPortStorage(w http.ResponseWriter, args map[string]interface{}, req
 	}
 
 	// 先进行Nmap扫描
-	var scanResults []*networkscan.ScanResult
+	var scanResults []*network.ScanResult
 	if len(ipsToScan) == 1 {
 		// 单个IP使用同步扫描
-		scanResults = []*networkscan.ScanResult{networkscan.ScanSingleIP(ipsToScan[0])}
+		scanResults = []*network.ScanResult{network.ScanSingleIP(ipsToScan[0])}
 	} else {
 		// 多个IP使用并发扫描
-		scanResults = networkscan.ScanIPList(ipsToScan)
+		scanResults = network.ScanIPList(ipsToScan)
 	}
 
 	// 存储IP+端口数据
@@ -696,5 +747,4 @@ func isValidIP(ip string) bool {
 
 	return true
 }
-
 
